@@ -2,21 +2,35 @@ package buquesdeguerra;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Tablero {
 
+    private int rondas = 0;
+    public int movimientos = 4;
     private JButton arrayButtons[][] = new JButton[7][6];
 
-    public void TableroBlanco(JPanel panel) {
+    public void TableroBlanco(JPanel panel, JLabel contador) {
         for (int i = 0; i < arrayButtons.length; i++) {
             for (int j = 0; j < arrayButtons[i].length; j++) {
                 JButton boxLabel = new JButton();
                 boxLabel.setBackground(Color.WHITE);
-                boxLabel.addActionListener(new boton());
-                boxLabel.setText("[ ]");
+
+                boxLabel.addActionListener((ActionEvent ae) -> {
+                    JButton button = (JButton) ae.getSource();
+                    button.setBackground(Color.yellow);
+                    button.setEnabled(false);
+                    if (movimientos <= 0) {
+                        rondas++;
+                        movimientos = 4;
+                    } else {
+                        movimientos--;
+                    }
+                    contador.setText(String.valueOf(rondas));
+                });
+                boxLabel.setText("~");
                 arrayButtons[i][j] = boxLabel;
             }
         }
@@ -43,14 +57,4 @@ public class Tablero {
             }
         }
     }
-
-    private static class boton implements ActionListener {
-
-
-        @Override
-        public void actionPerformed(ActionEvent ae) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-    }
-
 }

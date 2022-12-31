@@ -6,6 +6,8 @@ public class Player {
     private int BarcosPequenos = 2;
     private int puntos = 0;
     private int ronda = 0;
+    
+    
 
     public int getBarcosGrandes() {
         return BarcosGrandes;

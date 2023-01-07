@@ -7,31 +7,45 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Tablero {
-
-    private int rondas = 1;
-    public int movimientos = 5;
+    
     private JButton arrayButtons[][] = new JButton[7][6];
-
-    public void TableroBlanco(JPanel panel, JLabel contador) {
+    
+    public void TableroBlanco(JPanel panel, JLabel JLabelRonda, JLabel JLabelPuntos) {
+        Player jugador = new Player();
         for (int i = 0; i < arrayButtons.length; i++) {
             for (int j = 0; j < arrayButtons[i].length; j++) {
                 JButton boxLabel = new JButton();
-                boxLabel.setBackground(Color.WHITE);
-                boxLabel.setEnabled(false);
-
                 boxLabel.setText("~");
+                boxLabel.setForeground(Color.BLACK);
+                boxLabel.setFocusable(false);
+                boxLabel.setEnabled(false);
+                boxLabel.addActionListener((ActionEvent ae) -> {
+                    JButton button = (JButton) ae.getSource();
+
+                    //disparos
+                    jugador.setTabla(arrayButtons);
+                    jugador.Movimientos(button, JLabelRonda, JLabelPuntos);
+                    
+                });
                 arrayButtons[i][j] = boxLabel;
             }
         }
-
+        
+        Barco boat = new Barco(arrayButtons);
+        
+        boat.crearBarcosAleatorio();
+        jugador.setPosiciones(boat.getPosiciones());
+        jugador.obtenerInicioFin();
+        
         for (int i = 0; i < arrayButtons.length; i++) {
             for (int j = 0; j < arrayButtons[i].length; j++) {
                 panel.add(arrayButtons[i][j]);
             }
         }
     }
-
-    public void TableroNegro(JPanel panel, JLabel contador) {
+    
+    public void TableroNegro(JPanel panel, JLabel JLabelRonda, JLabel JLabelPuntos) {
+        Player jugador = new Player();
         for (int i = 0; i < arrayButtons.length; i++) {
             for (int j = 0; j < arrayButtons[i].length; j++) {
                 JButton boxLabel = new JButton();
@@ -42,39 +56,22 @@ public class Tablero {
                 boxLabel.addActionListener((ActionEvent ae) -> {
                     JButton button = (JButton) ae.getSource();
 
-                    if (movimientos > 0) {
-                        movimientos--;
-                    } else if (rondas <= 7) {
-                        rondas++;
-                        if (movimientos <= 0) {
-                            movimientos = 5;
-                            movimientos--;
-                        }
-                        contador.setText(String.valueOf(rondas));
-                    } else {
-                        movimientos = -1;
-                    }
-                    System.out.println(button.getName());
-                    if (button.getText().equals("1") && movimientos > -1) {
-                        button.setBackground(Color.yellow);
-                        button.setEnabled(false);
-                    } else if (button.getText().equals("~") && movimientos > -1) {
-                        button.setBackground(Color.red);
-                        button.setEnabled(false);
-                    }
-
+                    //disparos
+                    jugador.setTabla(arrayButtons);
+                    jugador.Movimientos(button, JLabelRonda, JLabelPuntos);
+                    
                 });
                 arrayButtons[i][j] = boxLabel;
             }
         }
-
+        
         Barco boat = new Barco(arrayButtons);
-
+        
         boat.crearBarcosAleatorio();
-
-        for (int i = 0;
-                i < arrayButtons.length;
-                i++) {
+        jugador.setPosiciones(boat.getPosiciones());
+        jugador.obtenerInicioFin();
+        
+        for (int i = 0; i < arrayButtons.length; i++) {
             for (int j = 0; j < arrayButtons[i].length; j++) {
                 panel.add(arrayButtons[i][j]);
             }

@@ -1,12 +1,13 @@
 package buquesdeguerra;
 
-
+import java.util.ArrayList;
 import javax.swing.JButton;
 
 public class Barco {
 
     private int barcos[][] = {{3, 3}, {2, 2}};
     private JButton[][] tablero;
+    private ArrayList<ArrayList<Integer>> posiciones = new ArrayList<>();
 
     public Barco(JButton[][] tablero) {
         this.tablero = tablero;
@@ -14,15 +15,20 @@ public class Barco {
 
     public boolean setBarco(int inicioH, int inicioV, int finH, int finV) {
         // Revisamos si existe un barco en esa posicion o en sus alrededores
+        
         if (existeBarco(inicioH, inicioV, finH, finV) == false) {
 
             // guardamos el barco
+            ArrayList<Integer> posbarcos = new ArrayList<>();
             for (int i = inicioH; i <= finH; i++) {
                 for (int j = inicioV; j <= finV; j++) {
                     tablero[i][j].setText("1");
-
+                    posbarcos.add(i);
+                    posbarcos.add(j);
                 }
+
             }
+            posiciones.add(posbarcos);
             return true;
         } else {
             return false;
@@ -78,6 +84,10 @@ public class Barco {
             }
         }
         return false;
+    }
+
+    public ArrayList<ArrayList<Integer>> getPosiciones() {
+        return posiciones;
     }
 
     public JButton[][] getTablero() {
